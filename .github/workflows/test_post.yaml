@@ -66,9 +66,7 @@ jobs:
           private-key: ${{ secrets.NSEC }}
           content: |
             XKCD #${{ steps.xkcd_check.outputs.comic_number }}: ${{ steps.xkcd_check.outputs.title }}
-      
             ${{ steps.xkcd_check.outputs.alt_text }}
-      
             ${{ steps.xkcd_check.outputs.image_url }}
 
 

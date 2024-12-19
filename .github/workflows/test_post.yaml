@@ -7,6 +7,8 @@ on:
 
 jobs:
   post-xkcd-to-nostr:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

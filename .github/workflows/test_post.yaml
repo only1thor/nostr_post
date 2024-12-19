@@ -64,7 +64,8 @@ jobs:
         with:
           relays: ${{ secrets.NOSTR_RELAYS }}
           private-key: ${{ secrets.NSEC }}
-          content: ${{ steps.xkcd_check.outputs.post_content }}
+          content: >
+            ${{ steps.xkcd_check.outputs.post_content }}
 
       - name: Commit changes
         if: steps.xkcd_check.outputs.should_post == 'true'

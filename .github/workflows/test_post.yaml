@@ -45,7 +45,7 @@ jobs:
 
           if latest_num > last_posted:
               # Prepare Nostr post content
-              content = f"XKCD #{latest_num}: {xkcd_data['title']}\n{xkcd_data['alt']}\n{xkcd_data['img']}"
+              content = f"XKCD #{latest_num}: {xkcd_data['title']}\n\n{xkcd_data['alt']}\n\n[{xkcd_data['img']}]({xkcd_data['img']})\nAlt text: {xkcd_data['title']} - {xkcd_data['alt']}"
               
               # Set output for next step
               print(f"::set-output name=post_content::{content}")

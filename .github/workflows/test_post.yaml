@@ -1,0 +1,16 @@
+name: Post to Nostr
+
+on:
+  workflow_dispatch:
+
+jobs:
+  post-to-nostr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post "Hello World" to Nostr
+        uses: snow-actions/nostr@v1.7.0
+        with:
+          relays: |
+            wss://relay.damus.io
+          private-key: ${{ secrets.NSEC }}
+          content: "Hello World"

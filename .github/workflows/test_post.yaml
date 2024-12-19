@@ -30,25 +30,25 @@ jobs:
           import requests
           import json
           import os
-
+      
           # Get latest XKCD comic
           xkcd_response = requests.get('https://xkcd.com/info.0.json')
           xkcd_data = xkcd_response.json()
           latest_num = xkcd_data['num']
-
+      
           # Read last posted number from file
           try:
               with open('last_posted.txt', 'r') as f:
                   last_posted = int(f.read().strip())
           except FileNotFoundError:
               last_posted = 0
-
+      
           if latest_num > last_posted:
-              # Prepare Nostr post content
-              content = f"XKCD #{latest_num}: {xkcd_data['title']}\n\n{xkcd_data['alt']}\n\n[{xkcd_data['img']}]({xkcd_data['img']})\nAlt text: {xkcd_data['title']} - {xkcd_data['alt']}"
-              
-              # Set output for next step
-              print(f"::set-output name=post_content::{content}")
+              # Set individual outputs
+              print(f"::set-output name=comic_number::{latest_num}")
+              print(f"::set-output name=title::{xkcd_data['title']}")
+              print(f"::set-output name=alt_text::{xkcd_data['alt']}")
+              print(f"::set-output name=image_url::{xkcd_data['img']}")
               print(f"::set-output name=should_post::true")
               
               # Update last posted number
@@ -57,15 +57,20 @@ jobs:
           else:
               print(f"::set-output name=should_post::false")
         shell: python
-
+      
       - name: Post to Nostr
         if: steps.xkcd_check.outputs.should_post == 'true'
         uses: snow-actions/nostr@v1.7.0
         with:
           relays: ${{ secrets.NOSTR_RELAYS }}
-          private-key: ${{ secrets.NSEC }}
-          content: >
-            ${{ steps.xkcd_check.outputs.post_content }}
+          private-key: ${{ secrets.NOSTR_PRIVATE_KEY }}
+          content: |
+            XKCD #${{ steps.xkcd_check.outputs.comic_number }}: ${{ steps.xkcd_check.outputs.title }}
+      
+            ${{ steps.xkcd_check.outputs.alt_text }}
+      
+            ${{ steps.xkcd_check.outputs.image_url }}
+
 
       - name: Commit changes
         if: steps.xkcd_check.outputs.should_post == 'true'

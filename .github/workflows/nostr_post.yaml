@@ -63,7 +63,7 @@ jobs:
         uses: snow-actions/nostr@v1.7.0
         with:
           relays: ${{ secrets.NOSTR_RELAYS }}
-          private-key: ${{ secrets.NSEC }}
+          private-key: ${{ secrets.NSEC_TEST }}
           content: |
             XKCD [#${{ steps.xkcd_check.outputs.comic_number }}](https://xkcd.com/${{ steps.xkcd_check.outputs.comic_number }}): ${{ steps.xkcd_check.outputs.title }}
             ${{ steps.xkcd_check.outputs.alt_text }}

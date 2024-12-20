@@ -30,19 +30,19 @@ jobs:
           import requests
           import json
           import os
-      
+
           # Get latest XKCD comic
           xkcd_response = requests.get('https://xkcd.com/info.0.json')
           xkcd_data = xkcd_response.json()
           latest_num = xkcd_data['num']
-      
+
           # Read last posted number from file
           try:
               with open('last_posted.txt', 'r') as f:
                   last_posted = int(f.read().strip())
           except FileNotFoundError:
               last_posted = 0
-      
+
           if latest_num > last_posted:
               # Set individual outputs
               print(f"::set-output name=comic_number::{latest_num}")
@@ -50,14 +50,14 @@ jobs:
               print(f"::set-output name=alt_text::{xkcd_data['alt']}")
               print(f"::set-output name=image_url::{xkcd_data['img']}")
               print(f"::set-output name=should_post::true")
-              
+
               # Update last posted number
               with open('last_posted.txt', 'w') as f:
                   f.write(str(latest_num))
           else:
               print(f"::set-output name=should_post::false")
         shell: python
-      
+
       - name: Post to Nostr
         if: steps.xkcd_check.outputs.should_post == 'true'
         uses: snow-actions/nostr@v1.7.0

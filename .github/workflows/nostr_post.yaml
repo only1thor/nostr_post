@@ -68,7 +68,7 @@ jobs:
             XKCD/${{ steps.xkcd_check.outputs.comic_number }}: ${{ steps.xkcd_check.outputs.title }}
             ${{ steps.xkcd_check.outputs.alt_text }}
             ${{ steps.xkcd_check.outputs.image_url }}
-            (https://xkcd.com/${{ steps.xkcd_check.outputs.comic_number }})
+            ( https://xkcd.com/${{ steps.xkcd_check.outputs.comic_number }} )
 
 
       - name: Commit changes
